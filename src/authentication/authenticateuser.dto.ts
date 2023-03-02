@@ -1,15 +1,7 @@
 import { IsString } from "class-validator";
 
-class CreateUserDto {
+class AuthenticateUserDto {
   @IsString()
-  public username: string;
-
-  @IsString()
-  public firstName: string;
-
-  @IsString()
-  public lastName: string;
-
   @IsString()
   public email: string;
 
@@ -21,9 +13,6 @@ class CreateUserDto {
 
   @IsString()
   public isAdmin: boolean;
-
-  @IsString()
-  public address: string;
 }
 
-export default CreateUserDto;
+export default AuthenticateUserDto;

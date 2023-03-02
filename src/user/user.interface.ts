@@ -1,14 +1,13 @@
 interface User {
   _id: string;
+  username: string;
   firstName: string;
   lastName: string;
-  fullName: string;
   email: string;
+  address: string;
+  role: string;
   password: string;
-  address?: {
-    street: string,
-    city: string,
-  };
+  isAdmin: boolean;
 }
 
 export default User;

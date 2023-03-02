@@ -1,15 +1,15 @@
-import * as mongoose from 'mongoose';
-import User from './user.interface';
-
-const addressSchema = new mongoose.Schema({
-  city: String,
-  country: String,
-  street: String,
-});
+import * as mongoose from "mongoose";
+import User from "./user.interface";
 
 const userSchema = new mongoose.Schema(
   {
-    address: addressSchema,
+    username: String,
+    role: {
+      type: String,
+      default: "user",
+    },
+    isAdmin: Boolean,
+    address: String,
     email: String,
     firstName: String,
     lastName: String,
@@ -23,19 +23,13 @@ const userSchema = new mongoose.Schema(
       virtuals: true,
       getters: true,
     },
-  },
+  }
 );
 
-userSchema.virtual('fullName').get(function () {
+userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 
-userSchema.virtual('posts', {
-  ref: 'Post',
-  localField: '_id',
-  foreignField: 'author',
-});
-
-const userModel = mongoose.model<User & mongoose.Document>('User', userSchema);
+const userModel = mongoose.model<User & mongoose.Document>("User", userSchema);
 
 export default userModel;
