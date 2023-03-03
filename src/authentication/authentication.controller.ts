@@ -2,7 +2,8 @@ import userModel from "../user/user.model";
 import Controller from "../interfaces/controller.interface";
 import { Request, Response, NextFunction, Router } from "express";
 import AuthenticateUserDto from "./authenticateuser.dto";
-import UserWithThatEmailAlreadyExistsException from "../exceptions/UserWithThatEmailAlreadyExistsException";
+import UserNotFoundException from "exceptions/UserNotFoundException";
+import UserWithThatEmailAlreadyExistsException from "exceptions/UserWithThatEmailAlreadyExistsException";
 import * as bcrypt from "bcrypt";
 
 class AuthenticationController implements Controller {
@@ -37,6 +38,24 @@ class AuthenticationController implements Controller {
       user.password = undefined;
 
       response.status(201).send(user);
+    }
+  };
+
+  private login = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    const reqBody: AuthenticateUserDto = request.body;
+
+    const user = await this.user.findOne({ email: reqBody.email });
+
+    if (user) {
+      user.password = undefined;
+
+      response.status(200).send(user);
+    } else {
+      next(new UserNotFoundException(reqBody.email));
     }
   };
 }
